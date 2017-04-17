@@ -1,0 +1,1304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="../css/public.css"/>
+<link type="text/css" rel="stylesheet" href="../css/reportStyle.css"/>
+<script type="text/javascript" src="../JS/jquery-1.8.1.min.js"></script>
+<title>比对报告</title>
+<script type="text/javascript">
+  var oldId = 0;
+	function showDiv(DIVid){
+		$(".right_part_msg").hide();
+		$("#head_"+DIVid).show();
+		$("#part_"+DIVid).show();
+	}
+  </script>
+    <script>
+function zishiying(){
+	var h = $(window).height();
+	h=h-50;
+	$(".Rbidui-con-left").height(h);
+		
+	$(".Rbidui-con-rightBox").height(h);
+}
+$(function(){
+	/*自适应*/
+	zishiying();
+	$(window).resize(function(){
+		zishiying();
+	});
+});
+</script>
+<style>
+/*选项*/
+.db_repetbox{ width:56px; height:18px;position:relative; border:solid 1px #ff4b4b;margin: 0 auto;}
+.db_red_block{ background-color:#ff4b4b; position:absolute; left:0px; bottom:0px; width:20%; height:18px;}
+.db_percent{color: #760202;font-family: 'Microsoft YaHei'; line-height:18px; text-align:center; position:absolute; left:50%; top:50%; margin-top:-9px;margin-left: -28px;width: 56px; display:block;}
+.db_xuanxiang{ overflow:hidden; background:url(../images/xuanxiang_bg.png) repeat-x;}
+.xs_page{ margin-bottom:6px; font-family:'微软雅黑'}
+.xs_page span{ color:#ff4b4b;}
+.db_xuanxiang li{  padding:10px 0px; float:left; width: 20%;text-align: center;}
+.db_xuanxiang .xuanxiang_cur{ background-color:#fff;}
+/*对比报告*/
+html,body{ height:100%; padding:0;}
+.rj-Rbidui-title{ color:#0193ef; font:bold 20px "微软雅黑"; border-bottom:solid 1px #f4f4f4; padding-bottom:6px;}
+.rj-Rbidui-title .xiangsi{font-size:12px; color:#535353; font-weight:normal; margin-left:14px;}
+.rj-Rbidui-title .red-ee2650{ color:#ee2650;}
+.rj-Rbidui-title .marRight15{ margin-right:15px;}
+.rj-Rbidui-title .tishi{ color:#a2a3a4; font-size:12px; font-weight:normal; padding-left:16px; background:url(../images/icon_ding.png) no-repeat; margin-left:20px;}
+/*内容*/
+.Rbidui-con{ overflow:hidden;}
+/*左边内容*/
+.Rbidui-con-left{ width:70%;box-shadow: inset -10px 0px 7px 0px rgba(211, 222, 229, 0.12);  box-sizing:border-box; float:left;overflow-y:auto;}
+.Rbidui-con-left p{ line-height:26px; color:#535353;padding:10px 20px 0;}
+.Rbidui-con-left .red-ff2424{ color:#ff2424;}
+/*申明*/
+.shengming{ background-color:#fafafa; padding:10px; margin-top:30px; color:#a2a3a4; line-height:24px;}
+.shengming a{ color:#0080ff;}
+.shengming a:hover{ text-decoration:underline;}
+/*右边内容*/
+.Rbidui-con-rightBox {float:left; width:30%;overflow-y:auto;}
+.Rbidui-con-right{ float:left; width:100%;}
+.Rbidui-con-right .pianduan-xiangsi{ color:#000; font-size:20px; font-family:"微软雅黑"; padding:20px; border-bottom:solid 1px #f4f4f4; background:url(../images/icon_xiangsi.png) 20px center no-repeat; padding-left:40px;}
+.Rbidui-con-right .red-e31515{ color:#e31515;}
+.Rbidui-con-right .songjian{ padding:20px 20px 0px;}
+.Rbidui-con-right .songjian h4{ font-size:14px;font-family:"微软雅黑"; line-height:26px;  background:url(../images/icon_blue.png) left center no-repeat; padding-left:15px; }
+.Rbidui-con-right .songjian p{font-size:14px;font-family:"微软雅黑"; line-height:26px;border-bottom: dotted 1px #dcdcdc; padding-bottom:10px;}
+.Rbidui-con-right .songjian2{ padding:10px 20px 0px;border-bottom:solid 1px #f4f4f4;}
+.Rbidui-con-right .songjian2 p{ border:none;}
+.Rbidui-con-right .songjian2 h4{ background:url(../images/icon_red.png) left center no-repeat; }
+.Rbidui-con .liebiao{ padding:10px 20px; color:#000; line-height:26px;border-bottom:solid 1px #f4f4f4;}
+.Rbidui-con .liebiao dd{ color:#696969;}
+.Rbidui-con .squre{ width:8px; height:8px; display:inline-block; margin-right:10px;}
+
+/*同义词  翻译*/
+.Rbidui-con .tongyici,.Rbidui-con .fanyi{ /*padding:20px; */color:#000; line-height:26px;border-bottom: dotted 1px #dcdcdc; padding-bottom:10px;margin-bottom:10px;}
+
+.tongyici li{float: left; width: 33.3%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.fanyi h4,.tongyici h4 { font-size: 14px;font-family: "微软雅黑"; line-height: 26px;
+}
+.tongyici h4{background: url(../images/icon_tong.png) left center no-repeat;padding-left: 15px;}
+.fanyi h4{background: url(../images/icon_fan.png) left center no-repeat;padding-left: 15px;}
+/*弹出框*/
+.alert_kuang{position:absolute; z-index:100000;width:310px;border:solid 1px #000;background:#fff;   box-shadow: 0px 5px 16px 0px rgba(14, 5, 10, 0.21);
+
+-moz-box-shadow:0px 5px 16px 0px rgba(14, 5, 10, 0.21); cursor:pointer;}
+.alert_kuang .list{ background-color:#fff;}
+.alert_kuang .list li{ color:#3c3c3c; font-family:'Microsoft YaHei'; padding:10px 10px; text-align:left; position:relative; overflow:hidden;}
+.alert_kuang .list li p a{ color:#3c3c3c; font-family:'Microsoft YaHei'; float:left; width:70%; padding-left:30%;}
+.alert_kuang .list li:hover{background-color:#f5f5f5;transition: all 1s;
+-moz-transition: all 1s;	
+-webkit-transition: all 1s;	
+-o-transition: all 1s;}
+.btn_close{height:34px; background-color:#687177; width:100%;}
+.btn_close img { float:right; margin-top:8px; margin-right:10px;}
+
+.repetbox{ width:56px; height:20px; background-color:#e6e6e6; position:absolute; left:6%; top:50%; margin-top:-10px;}
+.red_block{ background-color:#ff1616; position:absolute; left:0px; bottom:0px; width:20px; height:20px;}
+.percent{color: #000;font-family: 'Microsoft YaHei'; line-height:20px; text-align:center; position:absolute; left:50%; top:50%; margin-top:-10px; margin-left:-20px; display:block;}
+a{cursor: pointer;}
+</style>
+<script type="text/javascript">  
+
+var nowId = "";
+var oldId =0;	
+//弹出框
+var x=0;
+var y=0;
+var topscroll=0
+$(document).ready(function(){
+  $(document).mousemove(function(e){ 
+	  x=e.pageX;
+	  y=e.pageY;
+  });
+//滚动条  
+$(".layout_left").scroll(function() {
+   	topscroll+=1;	
+	if(topscroll>0){var tooltip=document.getElementById("nowId");
+   	tooltip.style.display="none";}
+  });
+});
+//显示隐藏
+function ShowToolTip(topDivId,DIVid){
+	if(nowId != "")
+	{
+		document.getElementById(nowId).style.display="none";
+	}
+   var tooltip=document.getElementById(topDivId);
+   tooltip.style.display="";
+   tooltip.style.left=parseInt(x)+"px" ;
+   tooltip.style.top=parseInt(y)+"px" ;
+   nowId = topDivId;
+
+$(".db_xuanxiang li").removeClass("xuanxiang_cur");
+   $(tooltip).find("ul>li").first().addClass("xuanxiang_cur");
+document.getElementById(oldId).style.display='none';
+		document.getElementById(DIVid).style.display='';
+		oldId = DIVid
+$('#'+nowId).mousedown( 
+function (event) { 
+var isMove = true; 
+var abs_x = event.pageX - $('#'+nowId).offset().left; 
+var abs_y = event.pageY - $('#'+nowId).offset().top; 
+$(document).mousemove(function (event) { 
+if (isMove) { 
+var obj = $('#'+nowId); 
+obj.css({'left':event.pageX - abs_x, 'top':event.pageY - abs_y}); 
+} 
+} 
+).mouseup( 
+function () { 
+isMove = false; 
+} 
+); 
+} 
+); 
+  }
+function HideToolTip(topDivId){
+	var tooltip=document.getElementById(topDivId);
+   	tooltip.style.display="none";
+	//$('.alert_kuang clearfix').hide();
+  }
+//拖曳
+$(document).ready( 
+function () { 
+$('#nowId').mousedown( 
+function (event) { 
+var isMove = true; 
+var abs_x = event.pageX - $('#nowId').offset().left; 
+var abs_y = event.pageY - $('#nowId').offset().top; 
+$(document).mousemove(function (event) { 
+if (isMove) { 
+var obj = $('#nowId'); 
+obj.css({'left':event.pageX - abs_x, 'top':event.pageY - abs_y}); 
+} 
+} 
+).mouseup( 
+function () { 
+isMove = false; 
+} 
+); 
+} 
+); 
+} 
+); 
+
+$(function(){
+	$(".db_xuanxiang li").click(function(){
+		$(".db_xuanxiang li").removeClass("xuanxiang_cur");
+		$(this).addClass("xuanxiang_cur");
+		});
+});
+
+function translate_sentence(obj_id,keywords){
+$("#fanyic"+obj_id).html('正在翻译,请稍后...'); 
+$("#fanyic"+obj_id).removeAttr('onclick');
+	var url = "http://116.62.31.36:8080/wpcheck/translate.html?jsonp=callbackfunction&souce="+keywords+"&id="+obj_id;  
+	var script = document.createElement('script'); 
+	script.setAttribute('src', url); 
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function callbackfunction(data){
+	var html=JSON.stringify(data.result);
+	var id = JSON.stringify(data.id);
+	$("#fanyic"+id).html(html); 
+} 
+</script>
+</head>
+<body>
+
+<div class="outSide_box" style="overflow:hidden; padding-bottom:0px; padding-right:0px;">
+<!--标题-->
+	<h1 class="rj-Rbidui-title">详细报告/<span class="xiangsi">总相似比：<span class="red-ee2650 marRight15">8.32%</span>引用率：<span class="red-ee2650 marRight15">0%</span>相似片段数：<span class="red-ee2650">21</span></span><span class="tishi">点击红色文字查看相似片段详情</span></h1>   
+<!--内容-->
+    <div class="Rbidui-con">
+    	<div class="Rbidui-con-left">
+    		<p><p>本科毕业设计论文</p><p>城市配送WEB前端系统设计</p><p>Design of WEB front end system for urban distribution </p><p>         专业名称        网络工程           </p><p>        学生姓名          方琴              </p><p>        学生学号       1308093045          </p><p>        指导教师         程博良            </p><p>        毕业时间         2017.7            </p><p>目  录</p><p>摘  要	4</p><p>致  谢	6</p><p>声  明	7</p><p>正  文	8</p><p>1. 绪论	8</p><p>2. 可行性分析	8</p><p>2.1. 技术可行性	8</p><p>2.2. 操作可行性	8</p><p>2.3. 市场可行性	9</p><p>3. 系统需求分析	9</p><p>3.1. 系统目标	9</p><p>3.2. 系统总体功能描述	9</p><p>3.3. 系统结构图	10</p><p>4. 技术介绍	10</p><p>4.1. webpack	10</p><p>4.2. angularJS	10</p><p>4.3. ui-router	10</p><p>4.4. ui-grid	11</p><p>5. 环境搭建	11</p><p>5.1. 安装nodeJs	11</p><p>5.2. 安装webpack	11</p><p>5.3. 打包配置文件	11</p><p>6. 组件结构	12</p><p>7. 实际开发	12</p><p>7.1. 入口文件	12</p><p>7.2. 头部组件	14</p><p>7.3. 主导航组件	14</p><p>7.4. 首页组件	14</p><p>7.5. 数据列表组件	14</p><p>7.6. 会员中心组件	15</p><p>7.7. 登录组件	15</p><p>7.8. 版权信息组件	16</p><p>8. 问题剖析	16</p><p>8.1. 异步加载数据成功后不能立即同步页面刷新	16</p><p>8.2. 使用window.location.href切换页面不成功	17</p><p>8.3. 一次对多个ui-view插入组件时不可以对组件传参数	17</p><p>9. 系统运行	17</p><p>9.1. 项目打包运行	17</p><p>9.2. 浏览器访问	18</p><p>结  论	19</p><p>参考文献	19</p><p>摘  要</p><p><a onclick="showDiv('0')" class=red target='right'>随着计算机网络技术不断发展、物流信息管理科学化步伐不断加快，网络化管理已成为一种趋势</a>。<a onclick="showDiv('1')" class=red target='right'>如今的物流信息管理受诸多因素影响，使得物流管理水平得不到提高</a>。<a onclick="showDiv('2')" class=red target='right'>所以，物流企业必须要增强自身核心竞争力，采用计算机网络技术加强物流信息管理，积极实施物流行业未来的发展战略</a>。</p><p>这个项目主要是做南昌市的城市配送，业务方面主要是展示在线交易，城配资源，物流相关和物流数据。功能方面主要是实现信息的增删改查。技术方面采用webpack打包工具和angularJs作为基础框架，导航使用ui-router实现单页面应用导航，数据列表采用ui-grid插件，样式风格则采用angular-bootstrap插件。头部和导航栏都封装成组件，主要内容区采用几个组件，类似的模板采用同一个插件，根据参数来配置页面。</p><p>关键词</p><p>城市配送、angularJs、webpack、ui-router、ui-grid、angular-bootstrap。</p><p>Abstract</p><p>With the development of computer network technology and the rapid development of logistics information management, network management has become a trend. Logistics information management is affected by many factors, so that the level of logistics management can not be improved. Therefore, the logistics enterprises must enhance their core competitiveness, the use of computer network technology to strengthen logistics information management, and actively implement the logistics industry in the future development strategy. </p><p>This project is mainly to do the city of Nanchang City, the main business is to display online transactions, the city with resources, logistics and logistics related data. The main function is to achieve information crud. Technology using webpack package tool and angularJs as a framework, the use of ui-router to achieve a single page navigation navigation application, using ui-grid plug-in data list, using angular-bootstrap plug-in style. The head and navigation bar are packaged into components, the main content area using a few components, similar to the same template with a plug-in, according to the parameters to configure the page. </p><p>Keywords</p><p>urban distribution、 angularJs、 webpack、 ui-router、 ui-grid、 angular-bootstrap.</p><p>致  谢</p><p><a onclick="showDiv('3')" class=red target='right'>首先感谢程老师在环境搭建与开发技术的选择等方面给了我很多精确的建议和帮助，其次就是我的同学们，是他们帮助了我更深刻的理解HTML语言</a>，还有就是那些帮助过我的不知姓名的网友，不厌烦的一次又一次的帮我解答问题，没有大家的帮助，我是不可能完成这次设计的。一个人的力量是有限的，发现问题的角度也有限，解决问题的方法也是单一的，非常感谢同学们和我对项目的沟通与建议，让我思维更加开阔，丰富，全面。也非常感谢在大学期间对我们尽心尽力的老师们，你们辛勤的劳动让我们在大学期间收货了人生中宝贵的知识财富，让我们能勇敢的面对走出社会的人生，谢谢你们不求回报的付出，谢谢你们倾囊相授的帮助。</p><p>声  明</p><p>本人郑重声明：</p><p><a onclick="showDiv('4')" class=red target='right'>所呈交的毕业设计（论文）是本人在指导教师指导下进行的研究工作及取得的研究成果</a>。<a onclick="showDiv('5')" class=red target='right'>其中除加以标注和致谢的地方，以及法律规定允许的之外，不包含其他人已经发表或撰写完成并以某种方式公开过的研究成果，也不包含为获得其他教育机构的学位或证书而作的材料</a>。<a onclick="showDiv('6')" class=red target='right'>其他同志对本研究所做的任何贡献均已在文中作了明确的说明并表示谢意</a>。</p><p><a onclick="showDiv('7')" class=red target='right'>本毕业设计（论文）成果是本人在江西师范大学读书期间在指导教师指导下取得的，成果归江西师范大学所有</a>。</p><p>特此声明。</p><p><a onclick="showDiv('8')" class=red target='right'>声明人（毕业设计（论文）作者）学号：1308093045</a></p><p><a onclick="showDiv('9')" class=red target='right'>声明人（毕业设计（论文）作者）签名：方琴</a></p><p>签名日期：　　2017年　5　月　4　日</p><p>正  文</p><p>1.绪论</p><p>前端发展迅速，框架不断的在更新换代，现在比较流行的就是angularJs，reactJs，vue.js等MVVM开发模式的框架，作为一个前端coder，我们需要与时俱进，紧跟前端发展的步伐，所以我就从angularJs开始学习，然后通过完成城市配送这个前端项目探索如何更深入的了解angularJs，如何独立思考解决问题。</p><p>在学习angulaJS的过程中我完全颠覆了原来的开发思想，angularJs呈现页面数据采用双向绑定，页面上数据的改变会及时更新到控制器的域$scope对象上，对$scope属性的改变也会及时渲染到页面上。通过这种方法实现数据表格呈现时采用原生的表格对数据进行循环虽然可以实现数据的呈现，但是可读性不高，灵活性比较差。所以我采用ui-grid插件来呈现表格数据，通过对ui-grid进行简单的配置就可以实现非常灵活的表格功能，并且可读性非常高。</p><p>这是我第一次接触单页面应用，使用ui-route能实现公用同一个公共模块，然后基于ui-sref的参数切换使得ui-view现实区域显示不同的模块，这样就不用每次点击导航后进行页面跳转，并且每个页面都得引入公共模块。</p><p>2.可行性分析</p><p><a onclick="showDiv('10')" class=red target='right'>项目开始的可行性分析非常重要，可行性分析的主要目的是对项目的实用性进行考察，根据项目的应用范围和使用对象进行分析，考察项母的实用性，可行性</a>。<a onclick="showDiv('11')" class=red target='right'>我们主要从三个方面讨论这个项目的可行性，技术可行性，操作可行性和市场</a>。</p><p>2.1.技术可行性</p><p>这个项目主要采用angularJS和它的一系列插件相辅相成的开发，angularJs采用灵活的各种指令供应开发过程中的需求，并且可以自定义组件实现想要的功能。angularJs通过对组件的封装使得代码的复用性很高。ui-route实现浏览器端的页面切换，并且可以传递参数，可以不同页面调用不同的组件，也可以不同页面调用同一个组件，通过传递的参数呈现类似的但是数据不同的页面，这个项目非常多的用到了同一个组件呈现不同的页面，代码效率非常高。</p><p>2.2.操作可行性</p><p>项目的功能主要是将城市的配送资源整合发布出来，方便大家共享信息共享需求，能够最大化的利用城市的资源，给彼此一个更大的交互平台，对平台上数据的分析可以给用户提供更加合适的方案和更多的参考方案。</p><p>2.3.市场可行性</p><p><a onclick="showDiv('12')" class=red target='right'>这个项目旨在给用户提供良好的可视化信息共享平台，给物流资源提供发布平台，用户可以在平台发布货源信息，货源需求，车源信息，车源需求，还可以发布招聘信息，相关人才也可以让大家看见自己</a>。<a onclick="showDiv('13')" class=red target='right'>主要是在南昌市内部进行物流相关的各种业务</a>。</p><p>3.系统需求分析</p><p>为了能够合理快速的开发必须对城市配送的业务有些了解，城市配送的需求包括物流相关信息的展示，政策公告的宣传，最新货源与车源的展示与发布。还有对城市资源例如仓库资源，设备资源的需求与供应建立连接平台，使得交易更加方便快捷。系统还提供了与物流相关的物流人才与物流招聘。只有对这些业务内容做好准备工作与需求分析，才是承接系统的关键阶段。</p><p>3.1.系统目标</p><p>这个系统的开发目标是打造城市配送一体化，平台化，快捷高效的配送模式，但是这个目标过于庞大，不是我一个人能够完成的，作为我个人来说，我的目标是通过这个系统学习angularJs和与其搭配使用的一系列插件。在开发中能独立解决各种问题，思考出最佳的方案，提升自己的学习能力与技术能力。</p><p>3.2.系统总体功能描述</p><p>系统总体功能包括物流相关信息的展示，政策公告的宣传，最新货源与车源的展示与发布，城市资源例如仓库资源，设备资源的需求与供应，物流相关的物流人才与物流招聘信息展示。登录跳转功能，会员中心个人物流信息的发布。</p><p>3.3.系统结构图</p><p>4.技术介绍</p><p>4.1.webpack</p><p><a onclick="showDiv('14')" class=red target='right'>Webpack是模块打包机，它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss</a>，<a onclick="showDiv('15')" class=red target='right'>TypeScrip等），并将其打包为合适的格式以供浏览器使用</a>。</p><p>4.2.angularJS</p><p>AngularJS诞生于2009年，由Misko Hevery 等人创建，后为Google所收购。<a onclick="showDiv('16')" class=red target='right'>是一款优秀的前端JS框架，已经被用于Google的多款产品当中</a>。<a onclick="showDiv('17')" class=red target='right'>AngularJS有着诸多特性，最为核心的是：MVVM、模块化、自动化双向数据绑定、语义化标签、依赖注入等等</a></p><p>4.3.ui-router</p><p><a onclick="showDiv('18')" class=red target='right'>UI-router是采用的是一种状态管理机制，“状态”可以继承，“状态”不	禁包含url，还有意见，控制器等，以此来组织路由和控制界面UI的渲染，	而不是单纯的改变路由</a>。<a onclick="showDiv('19')" class=red target='right'>对于UI方面提供嵌套视图，可以一个页面嵌套多	个视图，多视图再嵌套单个视图，每个视图可提供其特定的控制器等针对管	理，方便视图重用和功能精细，可以打造十分复杂的web应用程序</a>。</p><p>4.4.ui-grid</p><p>ui-grid是用于实现数据双向绑定实现数据表格的控件，可以通过ui-grid属性配置灵活的表格，可以加上ui-grid-edit ui-grid-pagination ui-grid-selection ui-grid-exporter ui-grid-resize-columns ui-grid-auto-resize等属性丰富表格。</p><p>5.环境搭建</p><p>5.1.安装nodeJs</p><p>下载nodejs安装</p><p>5.2.安装webpack</p><p>启动cmd键入命令：npm install webpack -g </p><p>5.3.打包配置文件</p><p>引入需要的包</p><p>var webpack = require(‘webpack’),</p><p>Path = require(‘path’);</p><p>module.exports = {</p><p>配置路口文件的路径</p><p>entry:{</p><p>Index:[‘webpack/hot/dev-server’,’./src/js/main/index.js’]</p><p>},</p><p>配置输出打包文件的路径</p><p>output:{</p><p>publicPath:”http://127.0.0.1:8080/dist/js/main”,</p><p>Path:path.resolve(_dirname,”dist/js/main”),</p><p>Filename:”bundle.js”</p><p>},</p><p>配置解析特殊文件的加载器</p><p>module:{</p><p>{test:/\.js$/,loader:’babel’,query:{persets:[“es2015”]}},</p><p>{test:/\.css$/,loader:’style-loader!css-loader’},</p><p>{test:/\.html$/,loader:’html’},</p><p>{test:/\.sass$/,loader:’style!css!sass?sourceMap’},</p><p>{test:/\.scss$/,loader:’style!css!sass?sourceMap’},</p><p>{test:/\.(png|jpg)$/,loader:’url-loader?Limit=8192’}</p><p>},</p><p>resolve:{</p><p>root:’’,</p><p>配置默认后缀名</p><p>extensions:[‘’,’.js’,’.json’,’.css’,’.sass’],</p><p>alias:{}</p><p>}</p><p>}</p><p>6.组件结构</p><p>7.实际开发</p><p>7.1.定义组件容器</p><p><div id="headWrapper"></p><p>    <div ui-view="head"></p><p>        <csps-head></csps-head></p><p>    </div></p><p></div></p><p><div id="viewWrapper"></p><p>    <div ui-view></p><p>        <csps-home></csps-home></p><p>    </div></p><p>    <div ui-view="c_content" style="position:absolute;top:0;left:215px;"></p><p>    </div></p><p></div></p><p><div id="footerWrapper"></p><p>    <csps-footer></csps-footer></p><p></div></p><p>7.2.入口文件</p><p>入口文件是项目打包时的起始文件，主要是配置主页面的路由，引入包含各个组件的模板文件封装成一个容器组件，用于在index.html页面调用。</p><p>定义csps组件，引入需要的ui.router插件，组件和服务。</p><p>let csps_web = angular.module("csps",[</p><p>    ComponentsModule.name,</p><p>    ServiceModule.name,</p><p>    'ui.router',</p><p>]).component('app',indexComponent);</p><p>设置路由。</p><p>csps_web.config(function($stateProvider) {</p><p>    var states = [{</p><p> 定义路由标识</p><p>        name: 'level_explain',</p><p>        url: '/level_explain',</p><p> 在该路由下插入ui-view的组件</p><p>        component : 'cspsTable',</p><p> 传入组件的参数</p><p>        resolve: {</p><p>            option : function(){</p><p>                let option = {</p><p>                    href : "",</p><p>                    title:"诚信等级说明",</p><p>                    group:"诚信认证",</p><p>                    gridOption : {</p><p>                        paginationPageSizes: [10, 20, 30],</p><p>                        paginationPageSize: 10,</p><p>                    }</p><p>                }</p><p>                return option;</p><p>            }</p><p>        }</p><p>}]</p><p>states.forEach(function(state) {</p><p>    $stateProvider.state(state);</p><p>});</p><p>}</p><p>7.3.头部组件</p><p>头部组件主要包含顶部导航和页面首页横幅展示，根据用户的登录状态顶部导航会有不同的显示。</p><p>定义头部的控制器文件</p><p>import "./head.scss";</p><p>import template from "./head.html";</p><p>const headComponent = {</p><p>    template:template,</p><p>    bindings : {</p><p>        option : "<",</p><p>    },</p><p>    controller:function($scope) {</p><p>        if(document.cookie.split("=")[1] == "0"){</p><p>            $scope.login = false;</p><p>        }else{</p><p>            $scope.login = true;</p><p>        }</p><p>    }</p><p>}</p><p>export default headComponent;</p><p>引入头部组件的控制器与模板的组合</p><p>import headComponent from "./head.component";</p><p>定义头部组件</p><p>const headModule = angular.module("cspsHead",[])</p><p>    .component("cspsHead",headComponent);</p><p>7.4.主导航组件</p><p>主导航组件是通过ui-sref实现单页面路由跳转，通过在ui-view里面插入不同的组件呈现不同的页面。</p><p>定义主导航的控制器文件</p><p>import template from "./nav.html";</p><p>import "./nav.scss";</p><p>const navComponent = {</p><p>    template : template,</p><p>    bindings :{</p><p>    },</p><p>    controller : ($scope)=>{</p><p>        $scope.navTree = [</p><p>            {</p><p>                fname :"政务咨讯",</p><p>                selected : false,</p><p>                className: "",</p><p>                childrens :[</p><p>                    {name : "图文资讯",route:"information"},</p><p>                    {name : "行业信息",route:"news"},</p><p>                    {name : "政策法规",route:"policy"},</p><p>                ]</p><p>            },</p><p>            {</p><p>                fname :"在线交易",</p><p>                selected : false,</p><p>                className: "",</p><p>                childrens :[</p><p>                    {name : "最新货源",route:"cargo"},</p><p>                    {name : "最新车源",route:"car"},</p><p>                ]</p><p>            },</p><p>            {</p><p>                fname :"城配资源",</p><p>                selected : false,</p><p>                className: "",</p><p>                childrens :[</p><p>                    {name : "仓储出租",route:"house_rent"},</p><p>                    {name : "托盘供应",route:"tray_supply"},</p><p>                    {name : "设备供应",route:"equip_supply"},</p><p>                    {name : "设备需求",route:"equip_demand"}</p><p>                ]</p><p>            },</p><p>            {</p><p>                fname :"物流相关",</p><p>                selected : false,</p><p>                className: "",</p><p>                childrens :[</p><p>                    {name : "物流招标",route:"log_tender"},</p><p>                    {name : "物流金融",route:"log_finance"},</p><p>                    {name : "企业招聘",route:"bus_recruit"},</p><p>                    {name : "物流人才",route:"log_talent"}</p><p>                ]</p><p>            },</p><p>            {</p><p>                fname :"物流数据",</p><p>                selected : false,</p><p>                className: "",</p><p>                childrens :[</p><p>                    // {name : "平台数据统计",route:"data_census"},</p><p>                    {name : "运价指数",route:"operate"}</p><p>                ]</p><p>            },</p><p>            {</p><p>                fname :"诚信认证",</p><p>                selected : false,</p><p>                className: "",</p><p>                childrens :[</p><p>                    {name : "企业诚信排行",route:"credit_rank"},</p><p>                    // {name : "诚信等级说明",route:"level_explain"}</p><p>                ]</p><p>            }</p><p>        ];</p><p>    }</p><p>}</p><p>export default navComponent;</p><p>引入主导航组件的控制器与模板的组合</p><p>import navComponent from "./nav.component";</p><p>定义主导航组件</p><p>const navModule = angular.module("cspsNav",[])</p><p>    .component("cspsNav",navComponent);</p><p>7.5.首页组件</p><p>首页与其他页面风格完全不一样，所以单独封装出来一个组件，首页上主要有用到bootstrap的轮播样式和标签页样式。</p><p>定义首页控制器文件</p><p>import template from "./home.html";</p><p>import "./home.scss";</p><p>const homeComponent = {</p><p>    template : template,</p><p>    controller : function ($scope,$timeout,ajaxService) {</p><p>        $scope.tabId = 0;</p><p>        $scope.tabDataUrl=["./src/js/common/dataBase/news.json","./src/js/common/dataBase/policy.json"];</p><p>        $scope.tabData = [];</p><p>        ajaxService.getData($scope.tabDataUrl[0]).then(res=>{</p><p>            console.log(res);</p><p>            $timeout(()=>{</p><p>                $scope.tabData = res;</p><p>            });</p><p>        });</p><p>        $scope.selectTab = id=>{</p><p>            $scope.tabId = id;</p><p>            ajaxService.getData($scope.tabDataUrl[id]).then(res=>{</p><p>                console.log(res);</p><p>                $timeout(()=>{</p><p>                    $scope.tabData = res;</p><p>                });</p><p>            });</p><p>        }</p><p>    }</p><p>}</p><p>export default homeComponent;</p><p>引入首页组件的控制器与模板的组合</p><p>import homeComponent from "./home.component";</p><p>定义首页组件</p><p>const homeModule = angular.module("cspsHome",[])</p><p>    .component("cspsHome",homeComponent);</p><p>7.6.数据列表组件</p><p>数据列表组件很多页面都用上了，主要用来放置过滤表单和数据表格，首页多个连接点击后都是跳转到这个组件，但是页面的呈现是通过参数来做差异的。</p><p>定义数据列表组件的控制器</p><p>import template from "./table.html";</p><p>import "./table.scss";</p><p>const tableComponent = {</p><p>    template : template,</p><p>    bindings : {</p><p>        option : "<",</p><p>    },</p><p>    controller : function ($scope,$uibModal,$timeout,ajaxService) {</p><p>        let ctrl = this,</p><p>            option = ctrl.option;</p><p>        $scope.title = option.title;</p><p>        $scope.group = option.group;</p><p>        $scope.filter = option.filter;</p><p>        $scope.gridOptions = option.gridOptions;</p><p>        $scope.gridOptions.enableRowHeaderSelection = false ;</p><p>        $scope.gridOptions.enableHorizontalScrollbar = 0;</p><p>        $scope.gridOptions.enableVerticalScrollbar = 0;</p><p>        ajaxService.getData(option.href).then(res=>{</p><p>            $timeout(()=>{</p><p>                ctrl.refreshTable(res);</p><p>            });</p><p>        });</p><p>        this.refreshTable = res=>{</p><p>            console.log(res);</p><p>            $scope.gridOptions.data = res;</p><p>            $scope.leftList = res;</p><p>        }</p><p>        $scope.add = function(){</p><p>            var modalInstance = $uibModal.open({</p><p>                animation: true,</p><p>                size : "lg",</p><p>                component: option.modalComponent,</p><p>                windowClass:"addModal",</p><p>                resolve: {</p><p>                }</p><p>            });</p><p>            modalInstance.result.then(function (res) {</p><p>                console.log(res);</p><p>            }, function (res) {</p><p>                console.log(res);</p><p>            });</p><p>        }</p><p>    }</p><p>}</p><p>export default tableComponent;</p><p>引入列表组件的控制器与模板的组合</p><p>import tableComponent from "./table.component";</p><p>定义数据列表组件，并引入表格所需的插件</p><p>const tableModule = angular.module("cspsTable",[</p><p>    'ui.bootstrap',</p><p>    'ui.grid',</p><p>    'ui.grid.edit',</p><p>    'ui.grid.selection',</p><p>    'ui.grid.cellNav',</p><p>    'ui.grid.pagination',</p><p>])</p><p>    .component("cspsTable",tableComponent);</p><p>7.7.会员中心组件</p><p>会员中心也有一个左侧导航，同样采用ui-router的ui-sref实现页面的切换，由于当页面同时要在两个ui-view里面放入组件时是传不了参数的，所以虽然会员中心的每个页面都很相似但是却共用不了同一个组件，所以我为每个页面封装了一个组件，这样页面也会更加灵活。但是代码量会大很多。</p><p>定义会员中心控制器</p><p>import template from "./center.html";</p><p>import "./center.scss";</p><p>const centerComponent = {</p><p>    template : template,</p><p>    bindings : {</p><p>        option : "<",</p><p>    },</p><p>    controller : function ($scope,$uibModal) {</p><p>    }</p><p>}</p><p>export default centerComponent;</p><p>引入会员中心组件的控制器与模板的组合</p><p>import centerComponent from "./center.component";</p><p>定义会员中心组件</p><p>const centerModule = angular.module("cspsCenter",[])</p><p>    .component("cspsCenter",centerComponent);</p><p>7.8.登录组件</p><p>登录组件登录成功就会设置document.cookie = "login=1";页面根据cookie值显示不同的操作按钮，实现登入效果。</p><p>定义登录组件控制器</p><p>import "./login.scss";</p><p>import template from "./login.html";</p><p>const loginComponent = {</p><p>    template : template,</p><p>    controller: ()=>{</p><p>    }</p><p>}</p><p>export default loginComponent;</p><p>引入登录组件的控制器与模板的组合</p><p>import loginComponent from "./login.component";</p><p>定义登录组件</p><p>const loginModule = angular.module("cspsLogin",[])</p><p>    .component("cspsLogin",loginComponent);</p><p>7.9.版权信息组件</p><p>版权信息组件只是简单的显示版权信息页脚，将其封装成一个组件可以节省多处调用。</p><p>引入版权信息组件的模板和控制器</p><p>import footerComponent from "./footer.component";</p><p>定义版权信息组件</p><p>const footerModule = angular.module("cspsFooter",[])</p><p>    .component("cspsFooter",footerComponent);</p><p>7.10.定义异步加载服务</p><p>class ajaxService {</p><p>    constructor($http){</p><p>        this.$http = $http;</p><p>    };</p><p>    getData(href,param){</p><p>        return new Promise(function(resolve,reject){</p><p>            $.ajax({</p><p>                type:"get",</p><p>                data :param,</p><p>                dataType : 'json',</p><p>                url : href,</p><p>                contentType:'application/json;charset="utf-8"',</p><p>                success : res=>resolve(res),</p><p>                error : res=>reject(res)</p><p>            });</p><p>        });</p><p>    }</p><p>}</p><p>export default ajaxService;</p><p>8.问题剖析</p><p>8.1.异步加载数据成功后不能立即同步页面刷新</p><p>数据加载采用promise实现异步加载</p><p>getData(href,param){</p><p>        return new Promise(function(resolve,reject){</p><p>            $.ajax({</p><p>                type:"get",</p><p>                data :param,</p><p>                dataType : 'json',</p><p>                url : href,</p><p>                contentType:'application/json;charset="utf-8"',</p><p>                success : res=>resolve(res),</p><p>                error : res=>reject(res)</p><p>            });</p><p>        });</p><p>}</p><p>getData(option.href).then(res=>{</p><p>        ctrl.refreshTable(res);</p><p>});</p><p>refreshTable = res=>{</p><p>        console.log(res);</p><p>        $scope.gridOptions.data = res;</p><p>        $scope.leftList = res;</p><p>}</p><p>在控制器里调用getData方法返回一个promise对象，通过.then()里的回	调函数拿到异步加载成功时返回的数据，通过refreshTable将数据绑定到	$scope域上，然后通过数据双向绑定实现页面上的数据实时刷新，但是在数	据成功加载的情况下页面并没有实时刷新。</p><p>解决办法：在.then的回调函数里套一层$timeout()在加载数据后延迟几秒	调更新$scope域函数。</p><p>getData(option.href).then(res=>{</p><p>            $timeout(()=>{</p><p>                ctrl.refreshTable(res);</p><p>            });</p><p>        });</p><p>8.2.使用window.location.href切换页面不成功</p><p>点击登录时使用window.location.href跳转到登入页面时成功，但是输入用户名和密码登录时通过window.location.href跳转到首页不成功。</p><p>我采用另一种方案实现页面的跳转，我采用ui-sref实现浏览器页面跳转，通过设置cookie判断当前状态是否登录。</p><p>8.3.一次对多个ui-view插入组件时不可以对组件传参数</p><p>views:{</p><p>"":{</p><p>   		component : 'cspsLogin',</p><p>   },</p><p>   "head":{</p><p>       component : 'cspsHead',</p><p>   }</p><p>}</p><p>在这种情况下用resolve:{}传参数到组件里是不成功的。</p><p>9.系统运行</p><p>9.1.项目打包运行</p><p>进入项目目录运行npm install下载相应的工具包，执行webpack-dev-server打包项目。</p><p>9.2.浏览器访问</p><p>在浏览器输入网址localhost:8080//webpack-dev-server/index.html进入首页，点击主导航链接可以单页面跳转到多个模块。</p><p>点击在线交易-最新货源</p><p>点击在线交易-最新车源</p><p>点击城配资源-仓储出租</p><p>点击城配资源-托盘供应</p><p>点击城市配送-设备供应</p><p>点击城市配送-设备需求</p><p><a onclick="showDiv('20')" class=red target='right'>左上角有个登录按钮，点击跳转到登入页面，登入成功跳转回首页，此时页面右上角多了退出和个人中心按钮，点击个人中心进入个人中心</a>。</p><p>进入个人中心才可以进行新增修改删除操作。</p><p>结  论</p><p>该系统后端采用spring+springMVC+hibernate框架开发，前端我用angularJS重新开发。之所以选择angularJS是因为现在前端开发发展迅速，研究一种MVVM框架可以转换之前对MVC模式开发的固化思想，开拓自己的知识领域，能更快的接受新知识，跟上前端飞速发展的步伐。在边学习边开发的过程中遇到不少困难，时而感觉很迷茫时而感觉到突破的喜悦，在无数次翻阅资料，Google中提升了自己的自学能力。</p><p>ES6的表面上感觉跟ES5除了表现形式的差别外没差太多，但是实际开发中发现还是差别蛮大的，ES6的设计比较适合组件化的开发。例如箭头函数中的this指向的是定义函数所在的类，而不是应用函数的对象，这一点很容易混淆，但是也很重要，换一种说法就是ES6语法中方法没有this这个属性，this变量指向的是定义函数的环境。ES5语法中的变量提升困扰了很多人，在ES5环境中对于变量可以先使用再定义，但是在ES6中没有变量提升，所以要用一个变量时需要先声明。</p><p>通过自己独立学习一门框架开发的过程中，发现了学习前端还是蛮有意思的，前端不仅仅只是呈现页面，他也有复杂的逻辑，一个好的前端能够为项目提供高效的入口，为后台提供更方便的需求。</p><p>参考文献</p><p>[1] AngularJs即学即用，（美国）夏德瑞（Shyam Seshadri）、（美国）格林（Brad Green） 译者：朱磊，中国电力出版社，2016</p><p>[2] AngularJS深度剖析与最佳实践，机械工业出版社，2015</p><p>[3] AngularJs高级程序设计，人民邮电出版社，2015</p><p>[4] 深入浅出Node.js，人民邮电出版社，2013</p><p>[5] ES6标准入门，电子工业出版社，2015</p><p>[6] Adobe Flex 3高级编程，清华大学出版社，2011</p><p>[7] CSS高效开发实践，电子工业出版社，2014</p><p>[8] HTML&CSS设计与架构网站，清华大学出版社，2013</p></p>
+        <dl class="shengming">
+        	<dt>声明：报告编号系送检论文检测报告在本系统中的唯一编号。本报告为维知网论文检测系统算法自动生成，仅对您所选择比对资源范围内检验结果负责，仅供参考。</dt>
+            <dt> 客服邮箱：2689421372@qq.com</dt>
+            <dt>论文检测官方网址：<a href="http://www.paperred.com">http://www.paperred.com/</a></dt>
+        </dl>
+        </div>
+		<div class="Rbidui-con-rightBox" >
+			<div id="head_0" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">62.5%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_0" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">62.5%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>随着计算机网络技术</font><font class=black>不断</font><font class=blue>发展</font>、<font class=black>物流</font><font class=black>信息</font><font class=blue>管理</font><font class=black>科学</font><font class=black>化步伐不断加快</font>，<font class=blue>网络化管理已成为</font><font class=black>一种</font><font class=blue>趋势</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...数字信号处<font color=red>理技术。四</font><font color=red>、计算机网络技术的</font><font color=red>发展随着计算机网络技术的飞速</font><font color=red>发展，</font>实施企业<font color=red>网络化管理已成为</font>企业实现<font color=red>管理</font>现代化的客观要求和必然<font color=red>趋势</font>...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...信号的接收都采用了数字信号处理技术，日本的数字ATC 和法国UM2000 数字编码轨道电路也都采用了<font style=color:red>数字信号处理技术。四、计算机网络技术的发展随着计算机网络技术的飞速发展，实施企业网络化管理已成为企业实现管理现代化的客观要求和必然趋势</font>。铁路信号系统网络化是铁路运输综合调度指挥的基础。在网络化的基础上实现信息化，从而实现集中、智能管理...</p>
+					</div>
+				<ul class="liebiao">
+					
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic0" style="cursor: pointer;" onclick="translate_sentence('0','随着计算机网络技术不断发展、物流信息管理科学化步伐不断加快，网络化管理已成为一种趋势')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：期刊数据库</li>
+								<li>篇名：铁路信号系统新技术的发展与应用</li>
+								<li>作者：夏之俊</li>
+								<li>出处：《科技经济市场》 2006， ():-</li>
+								<li>年份：2006</li>
+								<li>机构：武汉铁路职业技术学院</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_1" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">100%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_1" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">100%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>如今的物流信息管理受诸多因素影响</font>，<font class=blue>使得物流管理水平得不到提高</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...随着计算机网络技术不断发展、<font color=red>物流信息管理</font>科学化步伐不断加快,网络化<font color=red>管理</font>已成为一种趋势。<font color=red>如今的物流信息管理受诸多因素影响,</font><font color=red>使得物流管理水平得不到提高</font>。所以,<font color=red>物流</font>......</p>
+				</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">影响：</span><span class="green">陶染 感导 影响 浸染 感化 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic1" style="cursor: pointer;" onclick="translate_sentence('1','如今的物流信息管理受诸多因素影响，使得物流管理水平得不到提高')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：计算机网络技术在物流信息管理中的运用研究-【维普网】-仓储式...</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_2" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">100%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_2" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">100%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>所以</font>，<font class=blue>物流企业必须要增强自身核心竞争力</font>，<font class=blue>采用计算机网络技术加强物流信息管理</font>，<font class=blue>积极实施物流行业未来的发展战略</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...<font color=red>所以,</font><font color=red>物流企业必须要增强自身核心竞争力,</font><font color=red>采用计算机网络技术加强物流信息管理,</font><font color=red>积极实施物流行业未来的发展战略</font>。关键词:<font color=red>计算机网络技术;</font><font color=red>物流信息管</font>......</p>
+				</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">技术：</span><span class="green">技艺 技术 身手 技能 技巧 </span></li><li><span class="red">发展：</span><span class="green">进展 发展 成长 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic2" style="cursor: pointer;" onclick="translate_sentence('2','所以，物流企业必须要增强自身核心竞争力，采用计算机网络技术加强物流信息管理，积极实施物流行业未来的发展战略')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：计算机网络技术在物流信息管理中的运用_百度文库</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_3" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">62.5%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_3" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">62.5%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>首先感谢</font><font class=black>程</font><font class=blue>老师在环境搭建</font><font class=black>与开发技术</font><font class=black>的选择</font><font class=blue>等方面给了我很多精确的建议和帮助</font>，<font class=blue>其次</font><font class=black>就</font><font class=blue>是我的</font><font class=black>同学们</font>，<font class=black>是他们</font><font class=blue>帮助了我</font><font class=black>更深刻</font><font class=black>的理解HTM</font><font class=black>L语言</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...<font color=red>首先感谢李</font><font color=red>老师,</font><font color=red>在L</font>inux安装,特别是分区的安排和各...<font color=red>的等方面,李</font><font color=red>老师给了我很多精确的建议和帮助,</font><font color=red>其次</font>...linuxphp<font color=red>环境搭建</font>,linuxvpn服务器<font color=red>搭建</font>,li......</p>
+				</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">老师：</span><span class="green">教师 老师 教练 师长教师 先生 </span></li><li><span class="red">就是：</span><span class="green">便是 即是 就是 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic3" style="cursor: pointer;" onclick="translate_sentence('3','首先感谢程老师在环境搭建与开发技术的选择等方面给了我很多精确的建议和帮助，其次就是我的同学们，是他们帮助了我更深刻的理解HTML语言')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：宝典Linux平台WEB干事器搭建-豆丁网</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_4" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">91.67%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_4" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">91.67%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>所呈交的毕业</font><font class=black>设计</font>（<font class=blue>论文</font>）<font class=blue>是本人在指导</font><font class=black>教</font><font class=blue>师指导下进行的研究工作及取得的研究成果</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...的前提条件。<font color=red>毕业论文的作</font>者需要承诺<font color=red>所呈交的毕业论文是本人在老</font><font color=red>师指导下进行的研究工作及取得的研究成果。</font><font color=red>论文中</font><font color=red>的所</font>有内容均...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...。诚信承诺虽然没有法律效力，但是通过这种方式提醒学员强化诚信意识。诚信是毕业设计(论文)中出研究成果<font style=color:red>的前提条件。毕业论文的作者需要承诺所呈交的毕业论文是本人在老师指导下进行的研究工作及取得的研究成果。论文中的所有内容均</font>真实、可信。除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包...</p>
+					</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">进行：</span><span class="green">进行 实行 举行 举办 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic4" style="cursor: pointer;" onclick="translate_sentence('4','所呈交的毕业设计（论文）是本人在指导教师指导下进行的研究工作及取得的研究成果')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：期刊数据库</li>
+								<li>篇名：任职教育条件下图书馆实施信息素质教育的方法</li>
+								<li>作者：徐菲</li>
+								<li>出处：《海军院校教育》 2006， ():-</li>
+								<li>年份：2006</li>
+								<li>机构：海军大连舰艇学院</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_5" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">81.82%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_5" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">81.82%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>其中除加以标注和致谢的地方</font>，<font class=blue>以及</font><font class=black>法律规定允许</font><font class=black>的之</font><font class=black>外</font>，<font class=blue>不包含其他人已经发表或撰写</font><font class=black>完</font><font class=black>成并</font><font class=black>以某种</font><font class=black>方式公开</font><font class=blue>过的研究成果</font>，<font class=blue>也不包含为获得其他教育机构的学位或证书而作的材料</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...
+    本人声明所呈交<font color=red>的学位</font>论文是本人在导师指导下进行<font color=red>的研究工</font><font color=red>作及取</font><font color=red>得的研</font>
+<font color=red>究成果。论文</font><font color=red>中除了特别</font><font color=red>加以标注和致谢的地方外，不包含其他人已经发表或撰写</font>
+<font color=red>过的研究成果，也不包含为获得其他教育机构的学位或证书而使用</font><font color=red>过的材料</font>。...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...说明并表示谢忌。学位论文作者签名:\专古，芳签字日期:*加年咋刁日独创性声明    <font style=color:red>本人声明所呈交的学位论文是本人在导师指导下进行的研究工作及取得的研究成果。论文中除了特别加以标注和致谢的地方外，不包含其他人已经发表或撰写过的研究成果，也不包含为获得其他教育机构的学位或证书而使用过的材料。</font>与我一同工作的同志对本研究所做的任何贡献均己在论文中作了明确的说明并表示谢忌。学位论文作...</p>
+					</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">完成：</span><span class="green">竣事 结束 完成 达成 告竣 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic5" style="cursor: pointer;" onclick="translate_sentence('5','其中除加以标注和致谢的地方，以及法律规定允许的之外，不包含其他人已经发表或撰写完成并以某种方式公开过的研究成果，也不包含为获得其他教育机构的学位或证书而作的材料')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名： 肥厚梗阻型心肌病经皮腔内室间隔心肌消融术后围手术期心电特征研究</li>
+								<li>作者：曹东芳</li>
+								<li>出处：《中国优秀硕士学位论文全文数据库》 2012， (03):-</li>
+								<li>年份：2012</li>
+								<li>机构：北京协和医学院</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_6" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">93.75%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_6" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">93.75%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=black>其他</font><font class=blue>同志对本研究所做的任何贡献均已在文中作了明确的说明并表示谢意</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...工<font color=red>作的同志对本研究所做的任何贡献均已在论</font><font color=red>文中作了明确的说明并表示了谢意</font>。签名: 日期:I } A 7...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包含为获得北京林业大学或其它教育机构<font style=color:red>的学位或证书而使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示了谢意。签名: 日期</font>:I } A 7-53‘(.r} 关于论文使用授权的说明本人完全了解北京林业大学有关保留、使用学位论...</p>
+					</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">表示：</span><span class="green">体现 表现 示意 默示 表示 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic6" style="cursor: pointer;" onclick="translate_sentence('6','其他同志对本研究所做的任何贡献均已在文中作了明确的说明并表示谢意')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名：三倍体毛白杨纸浆材制浆特性研究 </li>
+								<li>作者：王宏斌</li>
+								<li>出处：《》 ， ():-</li>
+								<li>年份：</li>
+								<li>机构：北京林业大学</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_7" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">91.11%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_7" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">91.11%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=black>本毕业设计</font>（<font class=blue>论文</font>）<font class=blue>成果是本人在江西师范大学读书期间在指导教师指导下取得的</font>，<font class=blue>成果归江西师范大学所有</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...<font color=red>是本人存江两</font><font color=red>师范大学读书期间在导师指导下取得的，论文成果归江西师范大学所有，</font>特此声明．研究生饶三平<font color=red>指导</font>老师徐晓泉教授12拟Z一代数domain致  ...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...学位或证书而使用过的材料．其他同志对本研究所做的任何贡献已在论文中明确的说明谢意．  本学位论文成果<font style=color:red>是本人存江两师范大学读书期间在导师指导下取得的，论文成果归江西师范大学所有，特此声明．研究生饶三平指导老师徐晓泉教授12拟Z一代数domain致</font>  谢  本学位论文是在作者的导师徐晓泉教授的悉心指导下完成的。论文搁笔之际，心中感慨万千。三年来．...</p>
+					</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">教师：</span><span class="green">教师 西宾 老师 教练 先生 </span></li><li><span class="red">指导：</span><span class="green">就教 请问 指导 求教 辅导 </span></li><li><span class="red">所有：</span><span class="green">一共 所有 全数 悉数 统统 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic7" style="cursor: pointer;" onclick="translate_sentence('7','本毕业设计（论文）成果是本人在江西师范大学读书期间在指导教师指导下取得的，成果归江西师范大学所有')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名：拟Z-代数DOMAIN</li>
+								<li>作者：饶三平</li>
+								<li>出处：《》 ， ():-</li>
+								<li>年份：</li>
+								<li>机构：江西师范大学</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_8" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">86.96%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_8" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">86.96%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>声明人</font>（<font class=blue>毕业设计</font>（<font class=blue>论文</font>）<font class=blue>作者</font>）<font class=blue>学号</font><font class=black>：</font><font class=black>13</font><font class=blue>080</font><font class=black>93</font><font class=blue>045</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...本<font color=red>毕业设计(</font><font color=red>论文</font>)成果是本人在南昌大学共青学院指导教师指导下取得的,成果归南昌大学共青学院所有。<font color=red>声明人(</font><font color=red>毕业设计(</font><font color=red>论文)</font><font color=red>作者)</font><font color=red>学号:</font><font color=red>8054106</font><font color=red>00</font>7......</p>
+				</div>
+				<ul class="liebiao">
+					
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic8" style="cursor: pointer;" onclick="translate_sentence('8','声明人（毕业设计（论文）作者）学号：1308093045')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：专科毕业论文模板(正式)-道客巴巴</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_9" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">66.67%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_9" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">66.67%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=black>声明人</font>（<font class=blue>毕业设计</font>（<font class=blue>论文</font>）<font class=blue>作者</font>）<font class=blue>签名：</font><font class=black>方琴</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...
+ 
+ 
+ 
+<font color=red>毕业设计（论文）作者签名：</font>               指导教师...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...            不保密√。 （请在以上方框内打“√”）    <font style=color:red>毕业设计（论文）作者签名：               指导教师</font>签名：                              日期： 2011 年 ...</p>
+					</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">声明：</span><span class="green">申明 声明 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic9" style="cursor: pointer;" onclick="translate_sentence('9','声明人（毕业设计（论文）作者）签名：方琴')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名： 基于Linux架构的手机总线通信机制的研究及应用</li>
+								<li>作者：郭维科</li>
+								<li>出处：《中国优秀硕士学位论文全文数据库》 2011， (07):-</li>
+								<li>年份：2011</li>
+								<li>机构：上海交通大学</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_10" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">78.46%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_10" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">78.46%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>项目</font><font class=black>开始</font><font class=blue>的可行性分析非常重要</font>，<font class=blue>可行性分析的主要目的是对项目的实用性进行</font><font class=black>考察</font>，<font class=black>根据</font><font class=blue>项目的</font><font class=black>应</font><font class=black>用范围</font><font class=black>和使</font><font class=blue>用对</font><font class=black>象</font><font class=blue>进行分析</font>，<font class=black>考察</font><font class=black>项母</font><font class=blue>的实用性</font>，<font class=blue>可行性</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...
+辽宁大学专业学位硕士学位论文
+	相关理论和方法对本<font color=red>项目的可行性进行分析。</font><font color=red>分析的</font>结果将对本<font color=red>项目的</font>下一步方
+案和公司<font color=red>的进</font>一步决策起到<font color=red>非常重要的</font>作用。本文<font color=red>的主要目的是</font>通过理论联系实际
+的方法对此境外承包工程...</p>
+				</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">主要：</span><span class="green">重要 主要 首要 严重 要紧 </span></li><li><span class="red">进行：</span><span class="green">进行 实行 举行 举办 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic10" style="cursor: pointer;" onclick="translate_sentence('10','项目开始的可行性分析非常重要，可行性分析的主要目的是对项目的实用性进行考察，根据项目的应用范围和使用对象进行分析，考察项母的实用性，可行性')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名： ZS公司苏丹富拉电力项目可行性分析</li>
+								<li>作者：陈思</li>
+								<li>出处：《中国优秀硕士学位论文全文数据库》 2014， (05):-</li>
+								<li>年份：2014</li>
+								<li>机构：辽宁大学</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_11" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">75%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_11" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">75%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=black>我们</font><font class=blue>主要从三个方面</font><font class=black>讨</font><font class=black>论这</font><font class=black>个项目</font><font class=blue>的可行性</font>，<font class=blue>技术可行性</font>，<font class=blue>操作可行性和</font><font class=black>市场</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...而言，对于系统<font color=red>的可行性</font>分
+析<font color=red>主要从技术可行性、经济</font><font color=red>可行性和操作可行性三个方面</font>去论证和考虑。
+3.1...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...实现所需外界环境因素，包括风险、成本、性能、技术水平、与其他相关需求等，以到达可行性分析的目的。总体<font style=color:red>而言，对于系统的可行性分析主要从技术可行性、经济可行性和操作可行性三个方面去论证和考虑。3.1</font>.1 技术可行性技术可行性分析也是系统开发成功的基础。只有在系统开发的过程中不能失败，这样才能有效的...</p>
+					</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">主要：</span><span class="green">重要 主要 首要 严重 要紧 </span></li><li><span class="red">技术：</span><span class="green">技艺 技术 身手 技能 技巧 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic11" style="cursor: pointer;" onclick="translate_sentence('11','我们主要从三个方面讨论这个项目的可行性，技术可行性，操作可行性和市场')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名： 公安系统在线网络培训设计与实现</li>
+								<li>作者：罗伟粦</li>
+								<li>出处：《中国优秀硕士学位论文全文数据库》 2015， (05):-</li>
+								<li>年份：2015</li>
+								<li>机构：天津大学</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_12" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">65.85%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_12" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">65.85%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=black>这个项目旨</font><font class=black>在给用户</font><font class=blue>提供</font><font class=black>良好</font><font class=blue>的可</font><font class=black>视化</font><font class=blue>信息</font><font class=black>共享</font><font class=blue>平台</font>，<font class=black>给</font><font class=blue>物流资源提供发布平台</font>，<font class=black>用户</font><font class=blue>可以在平台发布货源信息</font>，<font class=blue>货源需求</font>，<font class=blue>车源信息</font>，<font class=blue>车源需求</font>，<font class=black>还</font><font class=blue>可以发布</font><font class=black>招聘</font><font class=blue>信息</font>，<font class=blue>相关</font><font class=black>人才也</font><font class=blue>可以</font><font class=black>让大家看见</font><font class=blue>自己</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...；
+④区域<font color=red>物流</font>市场动态<font color=red>信息发布系统</font><font color=red>提供区域</font><font color=red>物流</font>市场动态、国内处<font color=red>物流</font>行业新闻资
+讯；
+⑵企业会员<font color=red>信息发布</font>子系统主要为<font color=red>平台</font>会员企业在登录<font color=red>平台后自由</font><font color=red>发布自己相关
+</font><font color=red>的物流信息</font>：
+①<font color=red>货源信息，货主企业</font><font color=red>可以在平台发布货源信息、</font><font color=red>物流需求等</font><font color=red>信息，供有</font><font color=red>车源</font>与运...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...的基本知识、相关论文、发展前沿知识以及知识形式资讯，让物流从业人员及其它人员随时可以在线学习与查询<font style=color:red>；④区域物流市场动态信息发布系统提供区域物流市场动态、国内处物流行业新闻资讯；⑵企业会员信息发布子系统主要为平台会员企业在登录平台后自由发布自己相关的物流信息：①货源信息，货主企业可以在平台发布货源信息、物流需求等信息，供有车源与运</font>力的企业查询与联系，扩大企业的物流渠道；②运力信息，运输企业可以在平台发布车源与运力信息，以供有...</p>
+					</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">需求：</span><span class="green">需要 需求 </span></li><li><span class="red">可以：</span><span class="green">能够 没关系 可以 不妨 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic12" style="cursor: pointer;" onclick="translate_sentence('12','这个项目旨在给用户提供良好的可视化信息共享平台，给物流资源提供发布平台，用户可以在平台发布货源信息，货源需求，车源信息，车源需求，还可以发布招聘信息，相关人才也可以让大家看见自己')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名： 西江黄金水道物流信息化战略研究</li>
+								<li>作者：钟东</li>
+								<li>出处：《中国优秀硕士学位论文全文数据库》 2014， (03):-</li>
+								<li>年份：2014</li>
+								<li>机构：广西大学</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_13" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">65%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_13" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">65%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>主要是在</font><font class=black>南昌</font><font class=blue>市内部进行物流</font><font class=black>相关</font><font class=black>的各种</font><font class=black>业务</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...则<font color=red>主要是指</font><font color=red>物流企</font><font color=red>业内部进行的</font>价值实现活动。在区域经济环境下,城市...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...价值链可以分为外部价值链和内部价值链,外部价值链主要是指物流企业之外的相关价值实现活动,而内部价值链<font style=color:red>则主要是指物流企业内部进行的价值实现活动。在区域经济环境下,城市</font>旅游物流的外部价值链主要是指区域范围内为旅游物流活动实现提供价值活动的交通、营销、旅游以及相关管理部...</p>
+					</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">主要：</span><span class="green">重要 主要 首要 严重 要紧 </span></li><li><span class="red">进行：</span><span class="green">进行 实行 举行 举办 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic13" style="cursor: pointer;" onclick="translate_sentence('13','主要是在南昌市内部进行物流相关的各种业务')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：期刊数据库</li>
+								<li>篇名：区域经济视野下优化城市旅游物流价值链研究</li>
+								<li>作者：苏飞;</li>
+								<li>出处：《物流技术》 2014， (03):40-42</li>
+								<li>年份：2014</li>
+								<li>机构：徐州工程学院管理学院;</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_14" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">100%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_14" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">100%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>Webpack是模块打包机</font>，<font class=blue>它做的事情是</font>，<font class=blue>分析你的项目结构</font>，<font class=blue>找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言</font>（<font class=blue>Scss</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...<font color=red>WebP</font><font color=red>ack可以看</font><font color=red>做是模块打包机:</font><font color=red>它做的事情是,</font><font color=red>分析你的项目结构,</font><font color=red>找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言(</font><font color=red>Scss,Ty</font><font color=red>peScript</font>等),并将<font color=red>其打包</font>为合适......</p>
+				</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">一些：</span><span class="green">极少 少少 一些 </span></li><li><span class="red">分析：</span><span class="green">剖释 判辨 剖析 阐发 解析 </span></li><li><span class="red">直接：</span><span class="green">直接 干脆 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic14" style="cursor: pointer;" onclick="translate_sentence('14','Webpack是模块打包机，它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：什么是WebPack,为什么要使用它?-九成-博客园</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_15" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">100%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_15" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">100%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>TypeScrip等</font>），<font class=blue>并将其打包为合适的格式以供浏览器使用</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...<font color=red>打包</font>机:它做的事情是,分析你的项目结构,找到Java<font color=red>Scrip</font>t模块以及其它的一些<font color=red>浏览器</font>不能直接运行的拓展语言(<font color=red>Scss,</font><font color=red>TypeScrip</font>t等),<font color=red>并将其打包为合适的格式以供浏览器使用</font>......</p>
+				</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">格式：</span><span class="green">体例 体式格局 样子 方式 式子 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic15" style="cursor: pointer;" onclick="translate_sentence('15','TypeScrip等），并将其打包为合适的格式以供浏览器使用')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：请练完这16个webpack小例子-技术博客,人生所思-SegmentFault</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_16" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">100%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_16" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">100%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>是一款优秀的前端JS框架</font>，<font class=blue>已经被用于Google的多款产品当中</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...描述:Angular<font color=red>JS</font>[1]诞生于2009年,由MiskoHevery等人创建,后为<font color=red>Google</font>所收购。<font color=red>是一款优秀的前端JS框架,</font><font color=red>已经被用于Google的多款产品当中</font>。Angular<font color=red>JS</font>有......</p>
+				</div>
+				<ul class="liebiao">
+					
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic16" style="cursor: pointer;" onclick="translate_sentence('16','是一款优秀的前端JS框架，已经被用于Google的多款产品当中')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：前端Js框架汇总-jerry-Tom-博客园</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_17" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">95.83%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_17" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">95.83%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>AngularJS有着诸多特性</font>，<font class=blue>最为核心的是：MVVM</font>、<font class=blue>模块化</font>、<font class=blue>自动化双向</font><font class=black>数据</font><font class=blue>绑定</font>、<font class=blue>语义化标签</font>、<font class=blue>依赖注入等等</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...和 <font color=red>Jav</font><font color=red>aS</font>cript）配合使用。其<font color=red>有着诸多特性，最核心的是：MVVM、模块化、自动化
+</font><font color=red>双向绑定、语义化标签、依赖注入等。
+</font><font color=red>AngularJS</font> 为了克服 ...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...JS 是完全使用 JavaScript 编写的客户端技术。同其他的 Web 技术（HTML、CSS <font style=color:red>和 JavaScript）配合使用。其有着诸多特性，最核心的是：MVVM、模块化、自动化双向绑定、语义化标签、依赖注入等。AngularJS 为了克服</font> HTML 在构建应用上的不足而设计的。HTML 是一门很好地为静态文本展示设计的声明式语言，但其构...</p>
+					</div>
+				<ul class="liebiao">
+					
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic17" style="cursor: pointer;" onclick="translate_sentence('17','AngularJS有着诸多特性，最为核心的是：MVVM、模块化、自动化双向数据绑定、语义化标签、依赖注入等等')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名： 基于数字资源管理系统UI的Web前端开发的研究</li>
+								<li>作者：王小龙</li>
+								<li>出处：《中国优秀硕士学位论文全文数据库》 2015， (03):-</li>
+								<li>年份：2015</li>
+								<li>机构：北京服装学院</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_18" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">93.59%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_18" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">93.59%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>UI-router是采用的是一种状态管理机制</font>，<font class=blue>“状态”可以继承</font>，<font class=blue>“状态”不</font><font class=black>	</font><font class=blue>禁包含url</font>，<font class=blue>还有</font><font class=black>意见</font>，<font class=blue>控制</font><font class=black>器</font><font class=black>等</font>，<font class=blue>以此来组织路由和控制界面UI的渲染</font>，<font class=black>	</font><font class=blue>而不是单纯的改变路由</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...<font color=red>UI-R</font><font color=red>outer是采用的是一种状态管理机制,</font><font color=red>“状态”可以继承,</font><font color=red>“状态”不禁包含url,</font><font color=red>还有</font>views,con<font color=red>troller等,</font><font color=red>以此来组织路由和控制界面UI的渲染,</font><font color=red>而不是单纯的改变路由</font>。对......</p>
+				</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">可以：</span><span class="green">能够 没关系 可以 不妨 </span></li><li><span class="red">意见：</span><span class="green">成见 定见 意见 私见 观点 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic18" style="cursor: pointer;" onclick="translate_sentence('18','UI-router是采用的是一种状态管理机制，“状态”可以继承，“状态”不	禁包含url，还有意见，控制器等，以此来组织路由和控制界面UI的渲染，	而不是单纯的改变路由')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：Angular-Ui-Router-AngularJS知识库</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_19" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">89.02%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_19" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">89.02%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>对于UI方面提供嵌套视图</font>，<font class=blue>可以一个页面嵌套多</font><font class=black>	</font><font class=blue>个视图</font>，<font class=blue>多视图再嵌套单个视图</font>，<font class=blue>每个视图可提供其特定的</font><font class=black>控制器</font><font class=blue>等针对管</font><font class=black>	</font><font class=black>理</font>，<font class=blue>方便视图重用</font><font class=black>和</font><font class=blue>功能精细</font>，<font class=blue>可以打造十分复杂的web</font><font class=black>应</font><font class=black>用程序</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...<font color=red>对于UI方面提供嵌套视图,</font><font color=red>可以一个页面嵌套多个视图,</font><font color=red>多视图再嵌套单个视图,</font><font color=red>每个视图可提供其特定的</font>controller<font color=red>等针对管理,</font><font color=red>方便视图重用且</font><font color=red>功能精细,</font><font color=red>可以打造十分复杂的web</font>......</p>
+				</div>
+				<ul class="liebiao">
+					<div class="tongyici"><h4>同义词：</h4><ul class="clearfix"><li><span class="red">可以：</span><span class="green">能够 没关系 可以 不妨 </span></li></div>
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic19" style="cursor: pointer;" onclick="translate_sentence('19','对于UI方面提供嵌套视图，可以一个页面嵌套多	个视图，多视图再嵌套单个视图，每个视图可提供其特定的控制器等针对管	理，方便视图重用和功能精细，可以打造十分复杂的web应用程序')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：互联网</li>
+								<li>篇名：Angular-Ui-Router-18素材网</li>
+					</ul> 
+				</div>
+			</div>
+	</div><div id="head_20" class="right_part_msg" style="left: 912px; top: 491px;display:none; ">
+<ul class="db_xuanxiang">
+			<li class="xuanxiang_cur">
+				<a> 
+					<div class="xs_page">相似片段<span>1</span></div>
+					<div class="db_repetbox">
+						<div class="db_red_block" style="width:34px;"></div>
+						<span class="db_percent">70.18%</span>
+					</div>
+				</a>
+			</li>
+</ul>
+</div>
+<div id="part_20" class="right_part_msg" style="height: auto; display: none;">
+			<div class="Rbidui-con-right" ">
+				<div class="pianduan-xiangsi" style="position:relative;">
+					该片段相似度：<span class="red-e31515">70.18%</span>
+					<img style=" position:absolute; bottom:-9px; left:20px;" src="../images/icon_duibi_xiangsi.png">
+				</div>
+				<div class="songjian"> 
+					<h4>送检句子：</h4>
+					<p>...<font class=blue>左上角有个登录</font><font class=black>按钮</font>，<font class=blue>点击</font><font class=black>跳转到</font><font class=blue>登入页面</font>，<font class=blue>登入</font><font class=black>成功跳转</font><font class=black>回首</font><font class=black>页</font>，<font class=black>此</font><font class=blue>时页面</font><font class=black>右</font><font class=blue>上角</font><font class=black>多了</font><font class=blue>退出</font><font class=black>和</font><font class=blue>个人中心</font><font class=black>按钮</font>，<font class=blue>点击个人中心进入个人中心</font>...</p>
+				</div>
+				<div class="songjian songjian2">
+					<h4>相似句子：</h4>
+					<p>...系统
+当用户处于论坛会员<font color=red>登录态</font><font color=red>时，页面左上角</font>显示用户账号，“<font color=red>个人中心</font>”链接，
+“<font color=red>退出</font>”链接。<font color=red>点击“</font><font color=red>个人中心”</font><font color=red>，进入个人中心页面。</font><font color=red>个人中心</font>最上方有“<font color=red>个人</font>”、
+“好友”、“返回...</p>
+				</div>
+					<div class="songjian songjian2">
+						<h4>相似句子原文：</h4>
+						<p>...：包括当前用户所收藏过的主题列表，每一个列表项包括主题名，发表时间及“取消收藏”链接。(5)好友<font style=color:red>系统当用户处于论坛会员登录态时，页面左上角显示用户账号，“个人中心”链接，“退出”链接。点击“个人中心”，进入个人中心页面。个人中心最上方有“个人”、“好友”、“返回</font>”三个导航按钮，点击“好友”导航按钮，进入好友系统页面：页面上方显示在线好友的人数，下方为好友列表...</p>
+					</div>
+				<ul class="liebiao">
+					
+				</ul>
+				<div class="fanyi">
+					<h4 style="margin-left:15px;">翻译句子：</h4>
+					<ul class="liebiao">
+						<li id="fanyic0" class="green">
+							<a id="fanyic20" style="cursor: pointer;" onclick="translate_sentence('20','左上角有个登录按钮，点击跳转到登入页面，登入成功跳转回首页，此时页面右上角多了退出和个人中心按钮，点击个人中心进入个人中心')">点我翻译</a>
+						</li>
+					</ul> 
+				</div>
+				<div class="fanyi">
+					<ul class="liebiao">
+								<li>来源：硕博论文库</li>
+								<li>篇名： 基于Discuz的手机游戏论坛的设计与实现</li>
+								<li>作者：夏妍</li>
+								<li>出处：《中国优秀硕士学位论文全文数据库》 2014， (03):-</li>
+								<li>年份：2014</li>
+								<li>机构：北京交通大学</li>
+					</ul> 
+				</div>
+			</div>
+	</div>
+        </div>
+       
+       <dl class="liebiao" style="border:none;	float:left">
+            	<dt>文档中颜色标注说明：</dt>
+		<dd><span class="squre" style="background-color:#EE7700;"></span>橙色字体代表相似片段；</dd>
+            	<dd><span class="squre" style="background-color:#ff2424;"></span>红色字体代表相似片段；</dd>
+                <dd><span class="squre" style="background-color:#f0f000;"></span>黄色字体代表引用片段；</dd>
+                <dd><span class="squre" style="background-color:#000000;"></span>黑色字体代表自写片段；</dd>
+                <dd><span class="squre" style="background-color:#08c635;"></span>绿色表示参考文献引用规范。</dd>
+                <dd>请注意黄色字体的引用标注和参考文献序号是否相同。<br/>
+总相似比为红色字体和黄色字体占文章的总比率。</dd>
+         </dl>
+	 
+		</div>
+    </div>
+</div>
+</body>
+</html>
